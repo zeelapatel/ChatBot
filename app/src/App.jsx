@@ -5,12 +5,15 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Typin
 
 function App() {
   const [typing, setTyping] = useState(false);
+  // State to store chat messages
   const [messages, setMessages] = useState([]);
 
+  // Load chat history when the component mounts
   useEffect(() => {
     fetchChatHistory();
   }, []);
 
+  // Function to fetch chat history from the server
   const fetchChatHistory = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/chat-history");
@@ -18,6 +21,7 @@ function App() {
         throw new Error('Network response was not ok');
       }
       const history = await response.json();
+      // Format the history and update the messages state
       setMessages(history.map(msg => ({
         message: msg.message,
         sender: msg.sender,
@@ -28,6 +32,7 @@ function App() {
     }
   };
 
+  // Handle sending a new message
   const handleSend = async (message) => {
     const newMessage = {
       message: message,
@@ -35,12 +40,15 @@ function App() {
       direction: "outgoing",
     };
 
+    // Add the new message to the chat
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
+    
     setTyping(true);
     await messageToGpt(newMessages);
   };
 
+  // Function to send message to GPT and handle the response
   async function messageToGpt(chatMessages) {
     const lastMessage = chatMessages[chatMessages.length - 1];
 
@@ -49,6 +57,7 @@ function App() {
     };
 
     try {
+      // Send the message to the server
       const response = await fetch("http://localhost:3000/api/chat", {
         method: "POST",
         headers: {
@@ -61,7 +70,9 @@ function App() {
         throw new Error('Network response was not ok');
       }
 
+      // Get the response from GPT
       const data = await response.json();
+      
       setMessages([...chatMessages, {
         message: data.message,
         sender: "chatGPT",
@@ -70,10 +81,11 @@ function App() {
     } catch (error) {
       console.error('Error:', error);
     } finally {
+      // Hide typing indicator
       setTyping(false);
     }
   }
-
+  // Chat ui
   return (
     <div className='App'>
       <div style={{ position: 'relative', height: '600px', width: '1000px' }}>
