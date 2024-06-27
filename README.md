@@ -23,7 +23,8 @@ This project is a chatbot application that uses OpenAI's GPT-3.5 model to provid
     PORT: 
 3. To start the application, run:
    ```bash
-     npm start
+   cd ChatBot
+   npm start
 
 # Chatbot Project
 
