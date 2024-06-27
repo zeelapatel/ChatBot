@@ -15,7 +15,7 @@ This project is a chatbot application that uses OpenAI's GPT-3.5 model to provid
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/chatbot.git
+   git clone https://github.com/zeelapatel/ChatBot.git
    cd chatbot
 2. Create a .env file in backend and add your OpenAI API key and Port:
    ```bash
